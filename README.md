@@ -8,6 +8,10 @@
 `*.zip` `*.rar` `*.7z` `*.part0*.rar` `*.7z.0*`  
 PS.未做解压删除
 
+## 更新记录
+- 支持指定密码 `python3 7zx.py 路径 密码`  
+暂不支持多重/不同/奇怪特殊符号的密码
+
 ## 环境
 - `python 3.7+`
 - `7zip`  
@@ -16,9 +20,10 @@ PS.未做解压删除
 
 ## 用法
 ```
-python3 7zx.py 文件夹路径(结尾不能有斜杠)
+python3 7zx.py 文件夹路径(结尾不能有斜杠) 密码
 ```
 --列子
 ```
 python3 7zx.py D:\test\RAR
+python3 7zx.py D:\test\RAR password
 ```
