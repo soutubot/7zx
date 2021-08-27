@@ -11,7 +11,7 @@ from sys import argv, exit
 
 compressed_file = []
 
-def un7z(file, folder_name, folder_rename):
+def un7z(file, folder_name, folder_rename, password):
     files_path = file
     if platform.system().lower() == 'windows': #win
         files_path = f'"{str(files_path)}"' #压缩文件路径
@@ -22,7 +22,10 @@ def un7z(file, folder_name, folder_rename):
         files_name = str(file).split('/')[-1] #文件名
         files_to_path = files_path.replace(folder_name, folder_rename).replace(files_name, '') #解压到OK目录路径
 
-    cmd = f'7z x -pfaust {files_path} -o{files_to_path}' #7z解压命令
+    if not password : #判断是否有指定密码
+        cmd = f'7z x {files_path} -o{files_to_path}'  # 7z解压命令
+    else:
+        cmd = f'7z x -p{password} {files_path} -o{files_to_path}' #7z解压命令
     #print(cmd)
     cmd_run = os.system(cmd)
     print(cmd_run)
@@ -33,7 +36,11 @@ if __name__ == "__main__":
     if len(argv) == 1: #判断参数
         print(f'Usage: {argv[0]} DIR')
         exit()
-    if len(argv) == 2: #判断参数
+    if len(argv) == 2:
+        password = ''
+    if len(argv) == 3:
+        password = argv[2]
+    if 4 > len(argv) >= 2: #判断参数
         for file in Path(argv[1]).glob("**/*"): #遍历所有子目录子文件
             if os.path.isfile(file): #判断是否为文件
                 if '.rar' in str(file): #判断rar和第一个分卷文件
@@ -64,5 +71,5 @@ if __name__ == "__main__":
             exit()
 
         for files in compressed_file: #开始批量解压
-            un7z(files, folder_name, folder_rename)
+            un7z(files, folder_name, folder_rename, password)
             #print(files, folder_name, folder_rename)
